@@ -1,0 +1,17 @@
+{
+  "name": "NEXAR",
+  "short_name": "NEXAR",
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#F94F0C",
+  "background_color": "#ffffff",
+  "lang": "pt-BR",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any",
+      "purpose": "any"
+    }
+  ]
+}

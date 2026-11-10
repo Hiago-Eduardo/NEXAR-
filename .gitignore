@@ -1,0 +1,64 @@
+#env
+.env
+.env.*
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+.env
+
+# .env.example é documentação, não segredo -- precisa escapar da regra .env.*
+# acima, senão o arquivo que ensina a configurar o projeto nunca é versionado.
+!.env.example
+
+# Playwright
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
+
+# Cache do Vite
+.vite/
+
+# Documentos internos (ficam só na máquina): arquitetura, histórico, IDs dos projetos
+CLAUDE.md
+CONTEXTO.MD/
+Backend/supabase/sandbox/HOMOLOGACAO.md
+*.pdf
+*.docx
+
+# Imagens soltas: só as que o site usa (Web/public, Web/src) vão para o repo
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.webp
+!Web/public/**
+!Web/src/**
+
+# Arquivos soltos / temporários
+playground-3.mongodb.js
+*.tmp.mjs
+Backend/supabase/.temp/

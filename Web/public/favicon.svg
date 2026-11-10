@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <!-- Favicon NEXAR. O "X" é a marca: no logotipo da navbar e do rodapé ele é
+       a única letra em laranja (ver CONTEXTO.MD/Resumo.md seção 78). Fundo
+       escuro sólido em vez de transparente para o ícone não sumir na aba
+       clara nem na escura. -->
+  <rect width="64" height="64" rx="12" fill="#0B0B0C" />
+  <path
+    d="M18 17 L32 30 L46 17 L46 25 L38.5 32 L46 39 L46 47 L32 34 L18 47 L18 39 L25.5 32 L18 25 Z"
+    fill="#F94F0C"
+  />
+</svg>
