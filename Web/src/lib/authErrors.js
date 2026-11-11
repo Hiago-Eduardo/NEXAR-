@@ -48,6 +48,8 @@ export function authErrorMessage(error, fallback = "Algo deu errado. Tente de no
  */
 export function safeReturnPath(from, origin) {
   if (!from) return null;
+  // O navegador apaga tab/quebra de linha da URL: "/\t/site.com" viraria "//site.com".
+  if (/[\u0000-\u001f\u007f]/.test(from)) return null;
   let caminho = from;
   if (origin && caminho.startsWith(origin)) caminho = caminho.slice(origin.length) || "/";
   if (!caminho.startsWith("/") || caminho.startsWith("//") || caminho.startsWith("/\\")) return null;

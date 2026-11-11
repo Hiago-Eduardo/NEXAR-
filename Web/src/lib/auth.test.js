@@ -42,6 +42,15 @@ describe("safeReturnPath", () => {
     expect(safeReturnPath("javascript:alert(1)", origin)).toBeNull();
   });
 
+  // O navegador apaga tab/quebra de linha de uma URL antes de interpretá-la:
+  // "/\t/malicioso.com" vira "//malicioso.com" (outro domínio).
+  it("recusa caracteres de controle que o navegador apagaria", () => {
+    expect(safeReturnPath("/\t/malicioso.com", origin)).toBeNull();
+    expect(safeReturnPath("/\n/malicioso.com", origin)).toBeNull();
+    expect(safeReturnPath("/\r/malicioso.com", origin)).toBeNull();
+    expect(safeReturnPath("/Dashboard\u0000", origin)).toBeNull();
+  });
+
   it("não volta para o próprio login ou cadastro", () => {
     expect(safeReturnPath("/Login", origin)).toBeNull();
     expect(safeReturnPath("/Register?from=/x", origin)).toBeNull();

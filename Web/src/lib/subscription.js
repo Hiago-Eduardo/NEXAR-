@@ -4,9 +4,7 @@
 // (RLS + trg_enforce_supplier_ad_rules + the subscribe/cancel/reactivate/sync RPCs in
 // supabase/rls-policies.sql), comparing against the database's own now() — never the
 // browser clock.
-import { differenceInSeconds, intervalToDuration } from "date-fns";
-
-const NO_TIMER_STATES = new Set(["none", "expired"]);
+import { differenceInSeconds } from "date-fns";
 
 function expiresAtMs(subscription) {
   if (!subscription?.expires_at) return null;
@@ -61,14 +59,15 @@ export function formatCountdown(expiresAt) {
   const secondsLeft = differenceInSeconds(target, new Date());
   if (secondsLeft <= 0) return "Plano vencido";
 
-  const duration = intervalToDuration({ start: 0, end: secondsLeft * 1000 });
-  const days = (duration.years || 0) * 365 + (duration.months || 0) * 30 + (duration.days || 0);
-  const hours = duration.hours || 0;
+  // Divisão direta: converter meses de calendário em "30 dias" errava prazos
+  // acima de um mês (45 dias saíam como 44 -- subscription.test.js).
+  const days = Math.floor(secondsLeft / 86400);
+  const hours = Math.floor((secondsLeft % 86400) / 3600);
 
   if (days > 0) {
     return `${days} dia${days !== 1 ? "s" : ""}, ${hours} hora${hours !== 1 ? "s" : ""} restantes`;
   }
-  const minutes = duration.minutes || 0;
+  const minutes = Math.floor((secondsLeft % 3600) / 60);
   if (hours > 0) {
     return `${hours} hora${hours !== 1 ? "s" : ""}, ${minutes} minuto${minutes !== 1 ? "s" : ""} restantes`;
   }
