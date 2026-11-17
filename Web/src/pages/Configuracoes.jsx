@@ -16,6 +16,9 @@ import {
 import ChangePasswordSection from "@/components/settings/ChangePasswordSection";
 import { version as appVersion } from "../../package.json";
 
+// Esconde tudo que é "Em breve" (apresentação de 2026-11-17). true = volta a mostrar.
+const SHOW_COMING_SOON = false;
+
 const THEME_OPTIONS = [
   { value: "light", label: "Claro", icon: Sun, description: "Sempre usar o tema claro." },
   { value: "dark", label: "Escuro", icon: Moon, description: "Sempre usar o tema escuro." },
@@ -149,7 +152,7 @@ export default function Configuracoes() {
           <CardContent className="space-y-4">
             <ChangePasswordSection user={user} />
 
-            <Separator />
+            {SHOW_COMING_SOON && <Separator />}
 
             <ComingSoonRow icon={Smartphone} label="Sessões e dispositivos" />
             <ComingSoonRow icon={ShieldAlert} label="Autenticação em dois fatores" />
@@ -157,6 +160,7 @@ export default function Configuracoes() {
         </Card>
 
         {/* Privacidade */}
+        {(SHOW_COMING_SOON || isFornecedor) && (
         <Card className="rounded-card border border-slate-200 shadow-none dark:border-slate-800">
           <CardHeader className="pb-3">
             <CardTitle className="text-base">Privacidade</CardTitle>
@@ -184,8 +188,10 @@ export default function Configuracoes() {
             <ComingSoonRow icon={Database} label="Gerenciar meus dados" />
           </CardContent>
         </Card>
+        )}
 
         {/* Suporte */}
+        {SHOW_COMING_SOON && (
         <Card className="rounded-card border border-slate-200 shadow-none dark:border-slate-800">
           <CardHeader className="pb-3">
             <CardTitle className="text-base">Suporte</CardTitle>
@@ -198,6 +204,7 @@ export default function Configuracoes() {
             <ComingSoonRow icon={Lightbulb} label="Enviar sugestão" />
           </CardContent>
         </Card>
+        )}
 
         {/* Sobre o NEXAR */}
         <Card className="rounded-card border border-slate-200 shadow-none dark:border-slate-800">
@@ -214,14 +221,15 @@ export default function Configuracoes() {
               </p>
               <p className="text-xs text-slate-400 dark:text-slate-500 mt-1">Versão {appVersion}</p>
             </div>
-            <Separator />
+            {SHOW_COMING_SOON && <Separator />}
             <ComingSoonRow icon={FileText} label="Termos de uso" />
             <ComingSoonRow icon={FileText} label="Política de privacidade" />
             <ComingSoonRow icon={Cookie} label="Política de cookies" />
           </CardContent>
         </Card>
 
-        {/* Zona de perigo */}
+        {/* Zona de perigo (o único botão é "Em breve") */}
+        {SHOW_COMING_SOON && (
         <Card className="rounded-card border border-red-200 dark:border-red-900/50 shadow-sm">
           <CardHeader className="pb-3">
             <CardTitle className="text-base text-red-600 dark:text-red-400">Zona de perigo</CardTitle>
@@ -253,12 +261,14 @@ export default function Configuracoes() {
             </div>
           </CardContent>
         </Card>
+        )}
       </div>
     </div>
   );
 }
 
 function ComingSoonRow({ icon: Icon, label }) {
+  if (!SHOW_COMING_SOON) return null;
   return (
     <div className="flex items-center justify-between gap-3 py-2.5 opacity-60">
       <div className="flex items-center gap-3 min-w-0">

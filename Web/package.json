@@ -19,7 +19,9 @@
     "seed": "node scripts/seed-teste.mjs --confirmo",
     "seed:limpar": "node scripts/seed-teste.mjs --confirmo --limpar",
     "seed:visual": "node scripts/seed-visual.mjs --confirmo",
-    "seed:visual:limpar": "node scripts/seed-visual.mjs --confirmo --limpar"
+    "seed:visual:limpar": "node scripts/seed-visual.mjs --confirmo --limpar",
+    "seed:demo": "node scripts/seed-visual.mjs --confirmo --demo",
+    "seed:demo:limpar": "node scripts/seed-visual.mjs --confirmo --demo --limpar"
   },
   "dependencies": {
     "@hello-pangea/dnd": "^17.0.0",

@@ -38,6 +38,8 @@ function lerEnv() {
 
 const env = { ...lerEnv(), ...process.env };
 const limpar = process.argv.includes('--limpar');
+// --demo: conta de apresentação (DEMO_FORNECEDOR_* no .env.local), nomes sem o prefixo [TESTE].
+const demo = process.argv.includes('--demo');
 
 if (!process.argv.includes('--confirmo')) {
   console.error('Recusado: este script ESCREVE no banco. Rode por `npm run seed:visual`.');
@@ -170,11 +172,14 @@ const ANUNCIOS = [
   },
 ];
 
+if (demo) for (const a of ANUNCIOS) a.business_name = a.business_name.replace('[TESTE] ', '');
+
 // ---------------------------------------------------------------------------
 async function entrar(papel) {
   const sb = createClient(env.VITE_SUPABASE_URL, env.VITE_SUPABASE_PUBLISHABLE_KEY);
-  const email = papel === 'fornecedor' ? env.TEST_FORNECEDOR_EMAIL : env.TEST_CLIENTE_EMAIL;
-  const senha = papel === 'fornecedor' ? env.TEST_FORNECEDOR_PASSWORD : env.TEST_CLIENTE_PASSWORD;
+  const forn = demo ? 'DEMO_FORNECEDOR' : 'TEST_FORNECEDOR';
+  const email = papel === 'fornecedor' ? env[`${forn}_EMAIL`] : env.TEST_CLIENTE_EMAIL;
+  const senha = papel === 'fornecedor' ? env[`${forn}_PASSWORD`] : env.TEST_CLIENTE_PASSWORD;
   const { data, error } = await sb.auth.signInWithPassword({ email, password: senha });
   if (error) throw new Error(`login de ${papel} (${email}) falhou: ${error.message}`);
   return { sb, uid: data.user.id, email: data.user.email };
@@ -207,7 +212,7 @@ async function criar() {
     const ad = falhou(await forn.sb.from('suppliers').insert({
       created_by: forn.uid,
       business_name: a.business_name,
-      cnpj: '00.000.000/0000-00',
+      cnpj: '', // 00.000.000/0000-00 é recusado desde cnpj-validation.sql; vazio passa (coluna NOT NULL)
       description: a.description,
       category: a.category,
       location: a.location,
@@ -233,7 +238,7 @@ async function criar() {
       const prod = falhou(await forn.sb.from('products').insert({
         created_by: forn.uid,
         name: p.name,
-        description: `${p.name}. Produto de demonstração do site de testes.`,
+        description: `${p.name}. Produto de demonstração.`,
         price: p.price,
         unit: p.unit,
         min_quantity: 1,
