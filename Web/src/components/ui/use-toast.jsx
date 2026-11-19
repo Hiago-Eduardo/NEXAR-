@@ -110,7 +110,10 @@ function dispatch(action) {
   });
 }
 
-function toast({ ...props }) {
+// Esta versão do toast não usa o Radix, então nada fechava sozinho: o timer é daqui.
+const TOAST_DURATION = 5000;
+
+function toast({ duration = TOAST_DURATION, ...props }) {
   const id = genId();
 
   const update = (props) =>
@@ -133,6 +136,8 @@ function toast({ ...props }) {
       },
     },
   });
+
+  if (duration !== Infinity) setTimeout(dismiss, duration);
 
   return {
     id,
